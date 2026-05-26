@@ -85,7 +85,9 @@ function Loginpage() {
                         <div className="text-danger">
                             {formik.errors.confirmpassword}</div>}
 
-                    <Button type="submit">Submit</Button>
+                    <Button type="submit"
+                    variant="dark"
+                    >Submit</Button>
 
                     <p>
                         Don't have an account?{" "}

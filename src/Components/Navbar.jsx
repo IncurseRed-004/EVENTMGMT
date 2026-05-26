@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link } from "react-router-dom";
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { CgProfile } from "react-icons/cg";
-import { FaCartShopping } from "react-icons/fa6";
+import { IoTicket } from "react-icons/io5";
 import "./Navbar.css"
 
 function Navigationbar({cartitems}){
@@ -18,8 +18,8 @@ function Navigationbar({cartitems}){
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={Link} to="" >NearYou</Nav.Link>
-            <Nav.Link as={Link} to="/">Deals</Nav.Link>
+            <Nav.Link as={Link} to="/" >NearYou</Nav.Link>
+            <Nav.Link as={Link} to="/deals">Deals</Nav.Link>
           </Nav>
           
             <Nav className="ms-auto">
@@ -29,7 +29,7 @@ function Navigationbar({cartitems}){
 
 
               <Nav.Link as={Link} to='' className="position-relative">
-                <FaCartShopping size={22} />
+                <IoTicket  size={22} />
                 <span className="cart-count">{cartitems}</span>
               </Nav.Link>
 

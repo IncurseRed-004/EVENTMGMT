@@ -9,6 +9,7 @@ import Eventpage from "./Pages/Eventpage";
 import Eventdetails from "./Pages/Eventdetails";
 import Loginpage from "./Pages/Loginpage";
 import RegisterPage from "./Pages/Registrationpage";
+import Deals from "./Pages/Dealspage";
 
 
 function App() {
@@ -80,7 +81,7 @@ function App() {
           />} />
           <Route path="/login" element={<Loginpage/>} />
           <Route path="/register" element={<RegisterPage/>} />
-
+          <Route path="/deals" element={<Deals />} />
         </Routes>
         <Footer />
       </BrowserRouter>

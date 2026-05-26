@@ -24,7 +24,7 @@ function Eventdetails({cartitems, events ,setCartitems}){
                 <Row>
                     <Col md={5}>
                     <Card.Img
-                        src={singleevent.image}
+                        src={singleevent?.image ?? null}
                         style={{
                             height:"450px",
                             objectFit:"cover"
@@ -34,14 +34,14 @@ function Eventdetails({cartitems, events ,setCartitems}){
 
                     <Col md={7}>
                     <Card.Body>
-                        <h2>{singleevent.name}</h2>
-                        <p>{singleevent.description}</p>
-                        <h3>{singleevent.location}</h3>
-                        <h4>{singleevent.price}</h4>
+                        <h2>{singleevent?.name ?? ""}</h2>
+                        <p>{singleevent?.description ?? ""}</p>
+                        <h3>{singleevent?.location ?? ""}</h3>
+                        <h4>{singleevent?.price ?? ""}</h4>
 
                         <Button variant="dark"
                         onClick={handleAddtoCart}>
-                            Add to Cart
+                            Book Ticket
                         </Button>
 
                     </Card.Body>
