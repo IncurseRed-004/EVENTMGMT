@@ -10,6 +10,7 @@ import Eventdetails from "./Pages/Eventdetails";
 import Loginpage from "./Pages/Loginpage";
 import RegisterPage from "./Pages/Registrationpage";
 import Deals from "./Pages/Dealspage";
+import { ToastContainer } from "react-toastify";
 
 
 function App() {
@@ -69,6 +70,7 @@ function App() {
     <>
       <BrowserRouter>
         <Navigationbar cartitems={cartitems}/>
+        <ToastContainer position="top-right" autoClose={2000} />
         <Routes>
 
           <Route path="/" element={<Home events={events} />} />
