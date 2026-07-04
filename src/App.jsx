@@ -68,15 +68,18 @@ function App() {
           />
           <Route path="/login" element={<Loginpage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/add-events" element={<ProtectedRoute
-            requiredRole={["admin", "seller"]}>
-            <Addevents />
-          </ProtectedRoute>
-          } />
+          <Route
+            path="/add-events"
+            element={
+              <ProtectedRoute requiredRole={["admin", "seller"]}>
+                <Addevents />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/list-events" element={<ProtectedRoute requiredRole={["admin", "seller"]}>
             <Listevents events={events} />
           </ProtectedRoute>} />
-          <Route path="/edit-events/:id" element={<ProtectedRoute requiredRole={["admin"]}>
+          <Route path="/edit-events/:id" element={<ProtectedRoute requiredRole={["admin", "seller"]}>
             <Editevents />
           </ProtectedRoute>} />
           <Route path="/list-users" element={<ProtectedRoute requiredRole={["admin"]}>
@@ -85,7 +88,7 @@ function App() {
           <Route
             path="/admin/edit-user/:id"
             element={
-              <ProtectedRoute requiredRole={["admin"]}>
+              <ProtectedRoute requiredRole={["admin", "user", "seller"]}>
                 <EditUser />
               </ProtectedRoute>
             }

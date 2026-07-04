@@ -26,6 +26,7 @@ function RegisterPage() {
             .min(6, "Password must be at least 6 characters")
             .required("Password is required"),
         role: yup.string()
+            .oneOf(["admin", "seller", "user"], "Invalid role")
             .required("Role is required"),
 
     });
@@ -141,7 +142,6 @@ function RegisterPage() {
                                                     <option value="">Select Role</option>
                                                     <option value="user">User</option>
                                                     <option value="seller">Seller</option>
-                                                    <option value="publisher">Publisher</option>
                                                     <option value="admin">Admin</option>
                                                 </Form.Select>
 

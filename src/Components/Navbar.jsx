@@ -73,8 +73,8 @@ function Navigationbar() {
                       Edit Profile
                     </NavDropdown.Item>
 
-                    {/* Admin & Seller */}
-                    {(user?.role === "admin" || user?.role === "seller") && (
+                    {/* Seller & Admin */}
+                    {(user?.role === "seller" || user?.role === "admin") && (
                       <>
                         <NavDropdown.Item as={Link} to="/add-events">
                           Add Events

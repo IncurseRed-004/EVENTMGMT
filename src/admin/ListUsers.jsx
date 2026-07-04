@@ -82,10 +82,9 @@ const ListUsers = () => {
                                             onChange={(event) => handleUserRolechange({ id: user.id, role: event.target.value })}
                                             defaultValue={user?.role}
                                             aria-label="Default select example">
-                                            <option>Open this select menu</option>
                                             <option value="admin">Admin</option>
                                             <option value="user">User</option>
-                                            <option value="publisher">Publisher</option>
+                                            <option value="seller">Seller</option>
                                         </Form.Select>
                                     </td>
                                     <td>
