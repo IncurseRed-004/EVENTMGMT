@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { Col, Container, Image, Modal, Row, Table, Button } from "react-bootstrap";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { deleteEvent } from "../Redux/eventSlice";
 
 
 
-const ListEvents = () => {
-    const { events } = useSelector((state) => state.eventState); //to access redux store
+const ListEvents = ({ events }) => {
     const [show, setShow] = useState(false); //modal
     const [deleteEventIndex, setdeleteEventIndex] = useState(null);
     const dispatch = useDispatch();

@@ -74,7 +74,7 @@ function App() {
           </ProtectedRoute>
           } />
           <Route path="/list-events" element={<ProtectedRoute requiredRole={["admin", "seller"]}>
-            <Listevents />
+            <Listevents events={events} />
           </ProtectedRoute>} />
           <Route path="/edit-events/:id" element={<ProtectedRoute requiredRole={["admin"]}>
             <Editevents />
