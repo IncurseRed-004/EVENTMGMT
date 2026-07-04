@@ -3,6 +3,7 @@ import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import "./Eventpage.css"
 import { Link } from "react-router-dom";
 
+
 function Eventpage({ events }) {
     return (
         <>
@@ -26,33 +27,32 @@ function Eventpage({ events }) {
                                         objectFit: "cover"
                                     }}
                                 />
-                            <Card.Body >
-                                <Card.Title>
-                                    {event.name}
-                                </Card.Title>
+                                <Card.Body >
+                                    <Card.Title>
+                                        {event.name}
+                                    </Card.Title>
 
-                                {/* <Card.Text>
+                                    {/* <Card.Text>
                                     {event.description}
                                 </Card.Text> */}
 
-                                <h4>
-                                    {event.location}
-                                </h4>
+                                    <h4>
+                                        {event.location}
+                                    </h4>
 
-                                <h5>
-                                    ₹ {event.price}
-                                </h5>
-                            </Card.Body>
-                            <Link to={`/eventdetails/${event.id}`}>
+                                    <h5>
+                                        ₹ {event.price}
+                                    </h5>
+                                </Card.Body>
+                                <Link to={`/eventdetails/${event.id}`}>
                                     <div className="d-flex justify-content-center mt-4 mb-5">
                                         <Button
-                                        className="cus-button"
-                                        variant="dark
-                                        mt-auto py-2"
-                                        
+                                            variant="dark"
+                                            className="mt-auto py-2 cus-button"
+
                                         >View details</Button>
                                     </div>
-                                    </Link>
+                                </Link>
                             </Card>
                         </Col>
 
