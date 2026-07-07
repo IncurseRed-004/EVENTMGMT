@@ -18,38 +18,11 @@ import ListUsers from "./admin/ListUsers";
 import EditUser from "./admin/EditUser";
 import Cartpage from "./Pages/CartPage";
 import UserProfile from "./Pages/UserProfile";
-import axios from "axios";
-import { useEffect, useState } from "react";
+
 
 
 function App() {
-  const [events, setEvents] = useState([]);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const { data } = await axios.get(
-          "https://dummyjson.com/products"
-        );
-
-        const formattedEvents = data.products.map((product) => ({
-          id: product.id,
-          name: product.title,
-          price: product.price,
-          location: product.brand,
-          description: product.description,
-          image: product.thumbnail
-        }));
-
-        setEvents(formattedEvents);
-
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchEvents();
-  }, []);
+ 
 
 
   return (
@@ -59,13 +32,12 @@ function App() {
         <ToastContainer position="top-right" autoClose={2000} />
         <Routes>
 
-          <Route path="/" element={<Home events={events} />} />
+          <Route path="/" element={<Home />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/events" element={<Eventpage events={events} />} />
+          <Route path="/events" element={<Eventpage />} />
           <Route
             path="/eventdetails/:id"
-            element={<Eventdetails events={events} />}
-          />
+            element={<Eventdetails />} />
           <Route path="/login" element={<Loginpage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/add-events" element={<ProtectedRoute

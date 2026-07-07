@@ -3,24 +3,21 @@ import { Card, Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Container from "react-bootstrap/Container"
 import Button from "react-bootstrap/Button"
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addCartItem } from "../Redux/eventSlice";
 
-function Eventdetails({ events }) {
+function Eventdetails() {
     const { id } = useParams()
 
     const dispatch = useDispatch();
+    const events = useSelector((state) => state.eventState.events);
     const singleevent = events.find(
         (event) => event.id === Number(id)
     )
 
     const handleAddtoCart = () => {
-        console.log("Clicked");
-        console.log(singleevent);
-
+        if (!singleevent) return;
         dispatch(addCartItem(singleevent));
-
-        console.log("Dispatched");
     };
 
     return (
