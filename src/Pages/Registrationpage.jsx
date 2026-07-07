@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import * as formik from 'formik';
 import * as yup from 'yup';
 import { Container } from 'react-bootstrap';
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import { userRegister } from '../Redux/userSlice';
 import { toast } from 'react-toastify';
@@ -27,8 +27,7 @@ function RegisterPage() {
             .required("Password is required"),
         role: yup.string()
             .oneOf(["admin", "seller", "user"], "Invalid role")
-            .required("Role is required"),
-
+            .required("Please select a role")
     });
 
     const handleRegister = (values) => {
@@ -91,7 +90,7 @@ function RegisterPage() {
                                         </Row>
 
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="validationFormik01">
+                                            <Form.Group as={Col} controlId="validationFormik02">
                                                 <Form.Label>Email</Form.Label>
                                                 <Form.Control
                                                     type="email"
@@ -109,7 +108,7 @@ function RegisterPage() {
                                             </Form.Group>
                                         </Row>
                                         <Row className='mb-4'>
-                                            <Form.Group as={Col} controlId="validationFormik02">
+                                            <Form.Group as={Col} controlId="validationFormik03">
                                                 <Form.Label>Password</Form.Label>
                                                 <Form.Control
                                                     type="password"
@@ -127,9 +126,8 @@ function RegisterPage() {
 
                                             </Form.Group>
                                         </Row>
-
                                         <Row className="mb-3">
-                                            <Form.Group as={Col} controlId="validationFormik03">
+                                            <Form.Group as={Col} controlId="validationFormik04">
                                                 <Form.Label>Role</Form.Label>
 
                                                 <Form.Select

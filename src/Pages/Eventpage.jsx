@@ -2,9 +2,11 @@ import React from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import "./Eventpage.css"
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
-function Eventpage({ events }) {
+function Eventpage() {
+    const events = useSelector((state) => state.eventState.events);
     return (
         <>
             <Container className="mt-5">

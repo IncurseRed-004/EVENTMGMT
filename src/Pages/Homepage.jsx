@@ -3,12 +3,12 @@ import Banner from "../Components/Banner";
 import Eventpage from "./Eventpage";
 import Banner2 from "../Components/Banner2";
 
-function Home({events}){
+function Home(){
     return(
         <>
         <div>
             <Banner />
-            <Eventpage events={events} />
+            <Eventpage />
             <Banner2 />
         </div>
         </>

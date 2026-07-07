@@ -28,11 +28,10 @@ const eventSlice = createSlice({
         },
 
         deleteEvent: (state, action) => {
-            const eventIndex = state.events.findIndex((event) => event.id === action.payload);
-            if (eventIndex !== -1) {
-                state.events.splice(eventIndex, 1);
-                localStorage.setItem("events", JSON.stringify(state.events));
-            }
+            state.events = state.events.filter(event => event.id !== action.payload);
+            state.cartItems = state.cartItems.filter(item => item.id !== action.payload);
+            localStorage.setItem("events", JSON.stringify(state.events));
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         },
 
         addCartItem: (state, action) => {
