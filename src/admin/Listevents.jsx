@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { Col, Container, Image, Modal, Row, Table, Button } from "react-bootstrap";
 import { MdDeleteForever, MdEdit } from "react-icons/md";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { deleteEvent } from "../Redux/eventSlice";
 
 
 
-const ListEvents = ({ events }) => {
+
+const ListEvents = () => {
     const [show, setShow] = useState(false); //modal
     const [deleteEventIndex, setdeleteEventIndex] = useState(null);
     const dispatch = useDispatch();
+    const events = useSelector((state) => state.eventState.events);
 
     const handleClose = () => setShow(false);
     const handleShow = (eventId) => {
@@ -55,7 +57,7 @@ const ListEvents = ({ events }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {events.map((event, i) => (
+                            {events?.map((event, i) => (
                                 <tr key={event.id}>
                                     
                                     <td>
