@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Table, Col, Image, Button, InputGroup, Form } from "react-bootstrap";
 import { MdDeleteForever } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +8,7 @@ import { cartItemQuantityDecrement, cartItemQuantityIncrement, removeCartItem } 
 
 const Cart = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.eventState);
     console.log("Cart Items:", cartItems);
 
@@ -105,10 +107,22 @@ const Cart = () => {
                             ))}
 
                             <tr>
-                                <td colSpan={7} className="text-end">
-                                    <h4>Total: ₹{TotalPrice}</h4>
+                                <td colSpan={7}>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <h4 className="mb-0">
+                                            Total: ₹{TotalPrice}
+                                        </h4>
+                                        <Button
+                                            variant="success"
+                                            size="lg"
+                                            disabled={cartItems.length === 0}
+                                            onClick={() => navigate("/checkout")}>
+                                            Checkout
+                                        </Button>
+                                    </div>
                                 </td>
                             </tr>
+
                         </tbody>
                     </Table>
                 </Col>

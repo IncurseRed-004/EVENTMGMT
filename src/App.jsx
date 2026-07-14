@@ -18,6 +18,7 @@ import ListUsers from "./admin/ListUsers";
 import EditUser from "./admin/EditUser";
 import Cartpage from "./Pages/CartPage";
 import UserProfile from "./Pages/UserProfile";
+import CheckoutPage from "./Pages/CheckoutPage";
 
 
 
@@ -71,6 +72,14 @@ function App() {
             element={
               <ProtectedRoute requiredRole={["admin", "seller", "user"]}>
                 <UserProfile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <ProtectedRoute requiredRole={["admin", "seller", "user"]}>
+                <CheckoutPage />
               </ProtectedRoute>
             }
           />
