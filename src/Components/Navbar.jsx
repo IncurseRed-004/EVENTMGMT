@@ -14,8 +14,13 @@ import { userLogout } from "../Redux/userSlice";
 function Navigationbar() {
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.eventState);
-  const dispatch = useDispatch();
   const { user, isAuthenticated } = useSelector((state) => state.userState);// Accessing the isAuthenticated state from the Redux store
+
+  const myCart = cartItems.filter(
+    (item) => item.userId === user?.id
+  );
+  const dispatch = useDispatch();
+
 
   const handleLogout = () => {
     dispatch(userLogout());
@@ -57,12 +62,17 @@ function Navigationbar() {
                 </>
               ) : (
                 <>
-                  <Nav.Link as={Link} to="/cart" className="position-relative">
-                    <IoTicket size={22} />
-                    <span className="cart-count">
-                      {cartItems.length}
-                    </span>
-                  </Nav.Link>
+                  {user?.role === "user" && (
+                    <Nav.Link as={Link} to="/cart" className="position-relative">
+                      <IoTicket size={22} />
+                      {myCart.length > 0 && (
+                        <span className="cart-count">
+                          {myCart.length}
+                        </span>
+                      )}
+                    </Nav.Link>
+                  )}
+
 
                   <NavDropdown
                     title={<CgProfile size={22} />}
@@ -72,6 +82,12 @@ function Navigationbar() {
                     <NavDropdown.Item as={Link} to="/profile">
                       Edit Profile
                     </NavDropdown.Item>
+
+                    {user?.role === "user" && (
+                      <NavDropdown.Item as={Link} to="/previous-bookings">
+                        Previous Bookings
+                      </NavDropdown.Item>
+                    )}
 
                     {/* Seller & Admin */}
                     {(user?.role === "seller" || user?.role === "admin") && (

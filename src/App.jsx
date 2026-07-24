@@ -19,11 +19,12 @@ import EditUser from "./admin/EditUser";
 import Cartpage from "./Pages/CartPage";
 import UserProfile from "./Pages/UserProfile";
 import CheckoutPage from "./Pages/CheckoutPage";
+import PreviousBookings from "./Pages/PreviousBookings";
 
 
 
 function App() {
- 
+
 
 
   return (
@@ -58,6 +59,7 @@ function App() {
           <Route path="/list-users" element={<ProtectedRoute requiredRole={["admin"]}>
             <ListUsers />
           </ProtectedRoute>} />
+          <Route path="/previous-bookings" element={<PreviousBookings />} />
           <Route
             path="/admin/edit-user/:id"
             element={

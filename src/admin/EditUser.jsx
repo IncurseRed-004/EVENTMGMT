@@ -25,7 +25,7 @@ function EditUser() {
     }
 
     const schema = yup.object().shape({
-        fullname: yup.string().required("Full name required"),
+        name: yup.string().required("Name required"),
         email: yup
             .string()
             .email("Enter a valid email")
@@ -65,7 +65,7 @@ function EditUser() {
                                 validationSchema={schema}
                                 onSubmit={handleEditUser}
                                 initialValues={{
-                                    fullname: user.fullname,
+                                    name: user.name,
                                     email: user.email,
                                     password: user.password,
                                 }}
@@ -86,15 +86,15 @@ function EditUser() {
 
                                                 <Form.Control
                                                     type="text"
-                                                    name="fullname"
-                                                    value={values.fullname}
+                                                    name="name"
+                                                    value={values.name}
                                                     onChange={handleChange}
-                                                    isValid={touched.fullname && !errors.fullname}
-                                                    isInvalid={touched.fullname && !!errors.fullname}
+                                                    isValid={touched.name && !errors.name}
+                                                    isInvalid={touched.name && !!errors.name}
                                                 />
 
                                                 <Form.Control.Feedback type="invalid">
-                                                    {errors.fullname}
+                                                    {errors.name}
                                                 </Form.Control.Feedback>
 
                                             </Form.Group>

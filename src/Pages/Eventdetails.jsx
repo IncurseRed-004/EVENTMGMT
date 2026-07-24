@@ -10,14 +10,22 @@ function Eventdetails() {
     const { id } = useParams()
 
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.userState);
     const events = useSelector((state) => state.eventState.events);
     const singleevent = events.find(
         (event) => event.id === Number(id)
     )
+    const { cartItems } = useSelector(state => state.eventState);
+    const alreadyAdded = cartItems.some(
+        item =>
+            item.id === singleevent.id &&
+            item.userId === user.id
+    );
+
 
     const handleAddtoCart = () => {
         if (!singleevent) return;
-        dispatch(addCartItem(singleevent));
+        dispatch(addCartItem({ ...singleevent, userId: user.id }));
     };
 
     return (
@@ -45,9 +53,11 @@ function Eventdetails() {
                                         <h3>{singleevent?.location ?? ""}</h3>
                                         <h4>{singleevent?.price ?? ""}</h4>
 
-                                        <Button variant="dark"
-                                            onClick={handleAddtoCart}>
-                                            Book Ticket
+                                        <Button
+                                            disabled={alreadyAdded}
+                                            onClick={handleAddtoCart}
+                                        >
+                                            {alreadyAdded ? "Already Added" : "Book Ticket"}
                                         </Button>
 
                                     </Card.Body>

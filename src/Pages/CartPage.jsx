@@ -10,22 +10,27 @@ const Cart = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { cartItems } = useSelector((state) => state.eventState);
-    console.log("Cart Items:", cartItems);
+    const { user } = useSelector((state) => state.userState);
+    const myCart = cartItems.filter(
+        (item) => item.userId === user.id
+    );
+
+    console.log("My Cart:", myCart);
 
 
     const handleItemDecrement = (eventId) => {
-        dispatch(cartItemQuantityDecrement(eventId))
+        dispatch(cartItemQuantityDecrement({ id: eventId, userId: user.id }))
     }
 
     const handleItemIncrement = (eventId) => {
-        dispatch(cartItemQuantityIncrement(eventId))
+        dispatch(cartItemQuantityIncrement({ id: eventId, userId: user.id }))
     }
 
     const handleRemove = (eventId) => {
-        dispatch(removeCartItem(eventId))
+        dispatch(removeCartItem({ id: eventId, userId: user.id }))
     }
 
-    const TotalPrice = cartItems?.reduce((total, event) => {
+    const TotalPrice = myCart?.reduce((total, event) => {
         total += event.quantity * event.price;
         return total;
     }, 0)
@@ -52,7 +57,7 @@ const Cart = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {cartItems.map((event, i) => (
+                            {myCart.map((event, i) => (
                                 <tr key={event.id}>
 
                                     <td>
@@ -115,7 +120,7 @@ const Cart = () => {
                                         <Button
                                             variant="success"
                                             size="lg"
-                                            disabled={cartItems.length === 0}
+                                            disabled={myCart.length === 0}
                                             onClick={() => navigate("/checkout")}>
                                             Checkout
                                         </Button>

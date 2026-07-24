@@ -62,7 +62,7 @@ const ListUsers = () => {
                                         {i + 1}
                                     </td>
                                     <td>
-                                        {user?.fullname ?? " "}
+                                        {user?.name ?? " "}
                                     </td>
                                     <td>
                                         {user?.email ?? 0}
@@ -82,7 +82,6 @@ const ListUsers = () => {
                                             onChange={(event) => handleUserRolechange({ id: user.id, role: event.target.value })}
                                             defaultValue={user?.role}
                                             aria-label="Default select example">
-                                            <option value="admin">Admin</option>
                                             <option value="user">User</option>
                                             <option value="seller">Seller</option>
                                         </Form.Select>

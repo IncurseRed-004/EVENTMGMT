@@ -9,13 +9,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { userLogin } from "../Redux/userSlice";
 
+import { ADMIN } from "../utils/Masteradmin";
+
+
 function Loginpage() {
     const navigate = useNavigate();
-    const {users} = useSelector((state)=>state.userState); // to get the users from the state in redux and local storage
-    const dispatch =useDispatch();
-    
-    console.log("users--------->",users);
-    
+    const { users } = useSelector((state) => state.userState); // to get the users from the state in redux and local storage
+    const dispatch = useDispatch();
+
+    console.log("users--------->", users);
+
 
 
     const schema = yup.object().shape({
@@ -25,24 +28,35 @@ function Loginpage() {
         password: yup.string()
             .required("password is required"),
     });
-    
+
     const handleLogin = (values) => {
 
-        const user = users.find((user) => user.email ===values.email);// to find the user with the email entered in the form
+        if (values.email === ADMIN.email && values.password === ADMIN.password) {
+            dispatch(userLogin(ADMIN));
+            toast.success("Admin login was a grand successssss");
+            setTimeout(() => {
+                navigate("/");
+            }, 1500);
 
-        if(!user){
+            return;
+        }
+
+
+        const user = users.find((user) => user.email === values.email);// to find the user with the email entered in the form
+
+        if (!user) {
             toast.error("user not found");
             return;
         }
-        if(user.password !== values.password){
+        if (user.password !== values.password) {
             toast.error("invalid password");
             return;
         }
         dispatch(userLogin(user));// to update the state in redux and local storage
         toast.success("login was a grand successssss");
-        setTimeout(()=>{
+        setTimeout(() => {
             navigate("/")
-        },1500)
+        }, 1500)
 
 
     }

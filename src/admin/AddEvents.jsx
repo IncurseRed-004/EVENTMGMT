@@ -1,6 +1,6 @@
 import * as formik from 'formik';
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as yup from "yup";
@@ -10,6 +10,7 @@ function Addevents() {
     const { Formik } = formik;
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { user } = useSelector((state) => state.userState);
 
     const schema = yup.object().shape({
         name: yup.string().required("event name please"),
@@ -22,12 +23,17 @@ function Addevents() {
     });
 
     const handleAddevents = (values) => {
-        values.id = Date.now();
-        dispatch(addEvent(values));
-        toast.success("the event was added successfully !!!");
-        navigate("/list-events");
 
-    }
+    dispatch(
+        addEvent({
+            ...values,
+            id: Date.now(),
+            sellerId: user.id,
+        })
+    );
+    toast.success("The event was added successfully!");
+    navigate("/list-events");
+}
 
     // console.log(event);
     // console.log(event.location);

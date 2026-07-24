@@ -14,7 +14,7 @@ const UserProfile = () => {
 
     const { user } = useSelector((state) => state.userState);
 
-    const [fullname, setFullname] = useState(user?.fullname || "");
+    const [name, setName] = useState(user?.name || "");
     const [email, setEmail] = useState(user?.email || "");
     const [password, setPassword] = useState(user?.password || "");
 
@@ -43,7 +43,7 @@ const UserProfile = () => {
     const handleUpdate = () => {
         const updatedUser = {
             ...user,
-            fullname,
+            name,
             email,
             password,
             profilePhoto,
@@ -100,11 +100,11 @@ const UserProfile = () => {
 
                         <Col md={6}>
                             <Form.Group>
-                                <Form.Label>Full Name</Form.Label>
+                                <Form.Label>Name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    value={fullname}
-                                    onChange={(e) => setFullname(e.target.value)}
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
                                 />
                             </Form.Group>
                         </Col>

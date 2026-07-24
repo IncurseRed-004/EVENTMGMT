@@ -19,12 +19,21 @@ const eventSlice = createSlice({
                 state.events[eventIndex] = action.payload;
                 localStorage.setItem("events", JSON.stringify(state.events));
             }
-            const cartItemIndex = state.cartItems.findIndex((event) => event.id === action.payload.id);
-            if (cartItemIndex !== -1) {
-                const cartItemQuantity = state.cartItems[cartItemIndex].quantity;
-                state.cartItems[cartItemIndex] = { ...action.payload, quantity: cartItemQuantity };
-                localStorage.setItem("cartItems", JSON.stringify(state.cartItems))
-            }
+            state.cartItems = state.cartItems.map((item) => {
+                if (item.id === action.payload.id) {
+                    return {
+                        ...action.payload,
+                        userId: item.userId,
+                        quantity: item.quantity,
+                    };
+                }
+                return item;
+            });
+
+            localStorage.setItem(
+                "cartItems",
+                JSON.stringify(state.cartItems)
+            );
         },
 
         deleteEvent: (state, action) => {
@@ -35,7 +44,8 @@ const eventSlice = createSlice({
         },
 
         addCartItem: (state, action) => {
-            const cartItemIndex = state.cartItems.findIndex((item) => item.id === action.payload.id);
+            const cartItemIndex = state.cartItems.findIndex((item) =>
+                item.id === action.payload.id && item.userId === action.payload.userId);
             if (cartItemIndex === -1) {
                 state.cartItems.push({ ...action.payload, quantity: 1 });
             } else {
@@ -44,15 +54,24 @@ const eventSlice = createSlice({
             localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
         },
         cartItemQuantityIncrement: (state, action) => {
-            const cartItemIndex = state.cartItems.findIndex((item) => item.id === action.payload);
+            const cartItemIndex = state.cartItems.findIndex(
+                (item) =>
+                    item.id === action.payload.id &&
+                    item.userId === action.payload.userId
+            );
+
             if (cartItemIndex !== -1) {
                 state.cartItems[cartItemIndex].quantity++;
-                localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
 
+                localStorage.setItem(
+                    "cartItems",
+                    JSON.stringify(state.cartItems)
+                );
             }
         },
         cartItemQuantityDecrement: (state, action) => {
-            const cartItemIndex = state.cartItems.findIndex((item) => item.id === action.payload);
+            const cartItemIndex = state.cartItems.findIndex((item) =>
+                item.id === action.payload.id && item.userId === action.payload.userId);
             if (cartItemIndex !== -1) {
                 state.cartItems[cartItemIndex].quantity--;
                 localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
@@ -61,7 +80,11 @@ const eventSlice = createSlice({
         },
         removeCartItem: (state, action) => {
             state.cartItems = state.cartItems.filter(
-                (item) => item.id !== action.payload
+                (item) =>
+                    !(
+                        item.id === action.payload.id &&
+                        item.userId === action.payload.userId
+                    )
             );
 
             localStorage.setItem(
@@ -69,6 +92,13 @@ const eventSlice = createSlice({
                 JSON.stringify(state.cartItems)
             );
         },
+        clearUserCart: (state, action)=>{
+            state.cartItems = state.cartItems.filter(
+                item => item.userId !== action.payload
+            );
+
+            localStorage.setItem("cartItems", JSON.stringify(state.cartItems));
+        }
 
     },
 });
@@ -81,6 +111,7 @@ export const {
     addCartItem,
     cartItemQuantityIncrement,
     cartItemQuantityDecrement,
-    removeCartItem
+    removeCartItem,
+    clearUserCart
 } = eventSlice.actions;
 export default eventSlice.reducer;

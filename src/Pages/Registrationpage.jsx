@@ -140,7 +140,6 @@ function RegisterPage() {
                                                     <option value="">Select Role</option>
                                                     <option value="user">User</option>
                                                     <option value="seller">Seller</option>
-                                                    <option value="admin">Admin</option>
                                                 </Form.Select>
 
                                                 <Form.Control.Feedback type="invalid">

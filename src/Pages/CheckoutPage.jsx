@@ -1,42 +1,54 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import * as formik from "formik";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Container, Form, Row, Col, Card, Button } from "react-bootstrap";
 import * as yup from "yup";
 import { toast } from "react-toastify";
+import { FaMapMarkerAlt, FaCalendarAlt, FaClock, FaTicketAlt, FaMobileAlt, FaEnvelope, FaUser } from "react-icons/fa";
+import { clearUserCart } from "../Redux/eventSlice";
 
 function CheckoutPage() {
     const { Formik } = formik;
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { cartItems } = useSelector((state) => state.eventState);
+    const { user } = useSelector((state) => state.userState);
+    const myCart = cartItems.filter(
+        (item) => item.userId === user.id
+    );
 
-    const totalPrice = cartItems?.reduce((total, item) => {
+    console.log(cartItems);
+    const totalPrice = myCart?.reduce((total, item) => {
         return total + item.price * item.quantity;
     }, 0);
 
     const schema = yup.object().shape({
         fullName: yup.string().required("Full Name is required"),
+
         email: yup
             .string()
-            .email("Invalid email")
+            .email("Enter a valid email")
             .required("Email is required"),
+
         phone: yup
             .string()
-            .matches(/^[0-9]{10}$/, "Enter a valid 10-digit phone number")
+            .matches(/^[0-9]{10}$/, "Enter a valid phone number")
             .required("Phone Number is required"),
-        address: yup.string().required("Address is required"),
-        city: yup.string().required("City is required"),
-        state: yup.string().required("State is required"),
-        pincode: yup
+
+        paymentMethod: yup
             .string()
-            .matches(/^[0-9]{6}$/, "Enter a valid PIN Code")
-            .required("PIN Code is required"),
-        paymentMethod: yup.string().required("Select a payment method"),
+            .required("Choose a payment method"),
     });
 
     const handleCheckout = (values) => {
         console.log(values);
+        const previousBookings =
+            JSON.parse(localStorage.getItem("bookings")) || [];
+        localStorage.setItem(
+            "bookings",
+            JSON.stringify([...previousBookings, ...myCart]));
+        dispatch(clearUserCart(user.id));
         toast.success("Order placed successfully!");
         setTimeout(() => {
             navigate("/");
@@ -47,234 +59,209 @@ function CheckoutPage() {
         <Container className="my-5">
             <Row>
                 <Col lg={8}>
-                    <Card className="shadow p-4">
-                    <h2 className="mb-4">Checkout</h2>
+                    <Card className="shadow-sm border-0 rounded-4 p-4 mb-4">
 
-                    <Formik
-                        validationSchema={schema}
-                        onSubmit={handleCheckout}
-                        initialValues={{
-                            fullName: "",
-                            email: "",
-                            phone: "",
-                            address: "",
-                            city: "",
-                            state: "",
-                            pincode: "",
-                            paymentMethod: "",
-                        }}>
-                        {({
-                            handleSubmit, handleChange, values, errors, touched }) => (
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Full Name</Form.Label>
+                        <h4 className="fw-bold mb-3">
+                            Events to Book
+                        </h4>
 
-                                    <Form.Control
-                                        type="text"
-                                        name="fullName"
-                                        value={values.fullName}
+                        {myCart.map((event) => (
+                            <div
+                                key={event.id}
+                                className="d-flex justify-content-between border-bottom py-2"
+                            >
+                                <span>{event.name}</span>
+                                <span>x {event.quantity}</span>
+                            </div>
+                        ))}
+
+                    </Card>
+
+                    <Card className="shadow-sm border-0 rounded-4 p-4">
+
+                        <Formik
+                            validationSchema={schema}
+                            onSubmit={handleCheckout}
+                            initialValues={{
+                                fullName: "",
+                                email: "",
+                                phone: "",
+                                paymentMethod: "",
+                            }}>
+                            {({
+                                handleSubmit, handleChange, values, errors, touched }) => (
+                                <Form onSubmit={handleSubmit}>
+                                    <Row>
+                                        <Col md={6}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>
+                                                    <FaUser className="me-2" />
+                                                    Full Name
+                                                </Form.Label>
+
+                                                <Form.Control
+                                                    type="text"
+                                                    name="fullName"
+                                                    value={values.fullName}
+                                                    onChange={handleChange}
+                                                    isInvalid={!!errors.fullName && touched.fullName}
+                                                />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.fullName}
+                                                </Form.Control.Feedback>
+                                            </Form.Group>
+                                        </Col>
+
+                                        <Col md={6}>
+                                            <Form.Group className="mb-3">
+                                                <Form.Label>
+                                                    <FaEnvelope className="me-2" />
+                                                    Email
+                                                </Form.Label>
+
+                                                <Form.Control
+                                                    type="email"
+                                                    name="email"
+                                                    value={values.email}
+                                                    onChange={handleChange}
+                                                    isInvalid={!!errors.email && touched.email}
+                                                />
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.email}
+                                                </Form.Control.Feedback>
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+
+
+                                    <Row className="mt-3">
+
+                                        <Col>
+                                            <Form.Group className="mb-3">
+
+                                                <Form.Label>
+                                                    <FaMobileAlt className="me-2" />
+                                                    Phone Number
+                                                </Form.Label>
+
+                                                <Form.Control
+                                                    type="text"
+                                                    name="phone"
+                                                    value={values.phone}
+                                                    onChange={handleChange}
+                                                    isInvalid={touched.phone && !!errors.phone}
+                                                />
+
+                                                <Form.Control.Feedback type="invalid">
+                                                    {errors.phone}
+                                                </Form.Control.Feedback>
+
+                                            </Form.Group>
+                                        </Col>
+                                    </Row>
+
+
+                                    <h5 className="fw-bold mt-5 mb-3">
+                                        Choose Payment
+                                    </h5>
+
+
+                                    <Form.Check
+                                        type="radio"
+                                        label="Credit / Debit Card"
+                                        value="Card"
+                                        name="paymentMethod"
                                         onChange={handleChange}
-                                        isInvalid={!!errors.fullName && touched.fullName}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.fullName}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Email</Form.Label>
-
-                                    <Form.Control
-                                        type="email"
-                                        name="email"
-                                        value={values.email}
-                                        onChange={handleChange}
-                                        isInvalid={!!errors.email && touched.email}
-                                    />
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.email}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-
-                                <Form.Group className="mb-3">
-
-                                    <Form.Label>Phone Number</Form.Label>
-
-                                    <Form.Control
-                                        type="text"
-                                        name="phone"
-                                        value={values.phone}
-                                        onChange={handleChange}
-                                        isInvalid={touched.phone && !!errors.phone}
-                                    />
-
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.phone}
-                                    </Form.Control.Feedback>
-
-                                </Form.Group>
-
-                                <Form.Group className="mb-3">
-
-                                    <Form.Label>Address</Form.Label>
-
-                                    <Form.Control
-                                        as="textarea"
-                                        rows={3}
-                                        name="address"
-                                        value={values.address}
-                                        onChange={handleChange}
-                                        isInvalid={touched.address && !!errors.address
-                                        }
-                                    />
-
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.address}
-                                    </Form.Control.Feedback>
-
-                                </Form.Group>
-
-                                <Row>
-
-                                    <Col>
-
-                                        <Form.Group className="mb-3">
-                                            <Form.Label>City</Form.Label>
-
-                                            <Form.Control
-                                                type="text"
-                                                name="city"
-                                                value={values.city}
-                                                onChange={handleChange}
-                                                isInvalid={touched.city && !!errors.city
-                                                }
-                                            />
-
-                                            <Form.Control.Feedback type="invalid">
-                                                {errors.city}
-                                            </Form.Control.Feedback>
-
-                                        </Form.Group>
-
-                                    </Col>
-
-                                    <Col>
-
-                                        <Form.Group className="mb-3">
-                                            <Form.Label>State</Form.Label>
-
-                                            <Form.Control
-                                                type="text"
-                                                name="state"
-                                                value={values.state}
-                                                onChange={handleChange}
-                                                isInvalid={touched.state && !!errors.state
-                                                }
-                                            />
-
-                                            <Form.Control.Feedback type="invalid">
-                                                {errors.state}
-                                            </Form.Control.Feedback>
-
-                                        </Form.Group>
-
-                                    </Col>
-
-                                </Row>
-
-                                <Form.Group className="mb-3">
-
-                                    <Form.Label>PIN Code</Form.Label>
-
-                                    <Form.Control
-                                        type="text"
-                                        name="pincode"
-                                        value={values.pincode}
-                                        onChange={handleChange}
-                                        isInvalid={touched.pincode && !!errors.pincode
-                                        }
                                     />
 
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.pincode}
-                                    </Form.Control.Feedback>
+                                    <Form.Check
+                                        type="radio"
+                                        label="UPI"
+                                        value="UPI"
+                                        name="paymentMethod"
+                                        onChange={handleChange}
+                                    />
 
-                                </Form.Group>
+                                    <Form.Check
+                                        type="radio"
+                                        label="Net Banking"
+                                        value="Net Banking"
+                                        name="paymentMethod"
+                                        onChange={handleChange}
+                                    />
+                                    <p className="text-danger">
+                                        {touched.paymentMethod && errors.paymentMethod ? errors.paymentMethod : ""}
+                                    </p>
 
-                                <h5 className="mt-4">
-                                    Payment Method
-                                </h5>
+                                    <div className="d-grid mt-4">
 
-                                <Form.Check
-                                    type="radio"
-                                    label="Cash on Delivery"
-                                    value="COD"
-                                    name="paymentMethod"
-                                    onChange={handleChange}
-                                />
+                                        <Button type="submit">
+                                            Confirm Booking
+                                        </Button>
+                                    </div>
+                                </Form>
+                            )}
+                        </Formik>
+                    </Card>
+                </Col>
 
-                                <Form.Check
-                                    type="radio"
-                                    label="Credit / Debit Card"
-                                    value="Card"
-                                    name="paymentMethod"
-                                    onChange={handleChange}
-                                />
+                <Col lg={4}>
+                    <Card
+                        className="shadow-sm border-0 rounded-4 p-4"
+                        style={{
+                            position: "sticky",
+                            top: "90px",
+                        }}
+                    >
+                        <h4 className="fw-bold mb-3">
+                            Booking Summary
+                        </h4>
 
-                                <Form.Check
-                                    type="radio"
-                                    label="UPI"
-                                    value="UPI"
-                                    name="paymentMethod"
-                                    onChange={handleChange}
-                                />
+                        <hr />
 
-                                <Form.Check
-                                    type="radio"
-                                    label="Net Banking"
-                                    value="Net Banking"
-                                    name="paymentMethod"
-                                    onChange={handleChange}
-                                />
-                                <p className="text-danger">
-                                    {touched.paymentMethod && errors.paymentMethod ? errors.paymentMethod : ""}
-                                </p>
+                        <div className="mb-3">
 
-                                <div className="d-grid mt-4">
+                            <h5 className="fw-semibold">
+                                {myCart.map((event) => (
+                                    <p key={event.id} className="mb-1">
+                                        {event.name}
+                                    </p>
+                                ))}
+                            </h5>
 
-                                    <Button type="submit">
-                                        Place Order
-                                    </Button>
+                            <small className="text-muted">
+                                {myCart.length} Ticket(s)                            </small>
 
-                                </div>
-                            </Form>
-                        )}
-                    </Formik>
-                </Card>
-            </Col>
+                        </div>
 
-            <Col lg={4}>
+                        <hr />
 
-                <Card className="shadow p-4">
+                        <div className="d-flex justify-content-between mb-2">
+                            <span>Ticket Price</span>
+                            <span>₹{totalPrice}</span>
+                        </div>
 
-                    <h4>Order Summary</h4>
+                        <div className="d-flex justify-content-between mb-2">
+                            <span>Convenience Fee</span>
+                            <span>₹40</span>
+                        </div>
 
-                    <hr />
+                        <div className="d-flex justify-content-between mb-3">
+                            <span>GST</span>
+                            <span>₹7</span>
+                        </div>
 
-                    <p>
-                        Total Items :
-                        <strong> {cartItems.length}</strong>
-                    </p>
+                        <hr />
 
-                    <p>
-                        Total Amount :
-                        <strong> ₹{totalPrice}</strong>
-                    </p>
+                        <div className="d-flex justify-content-between fw-bold fs-5">
+                            <span>Total</span>
+                            <span>₹{totalPrice + 47}</span>
+                        </div>
 
-                </Card>
 
-            </Col>
-        </Row>
+                    </Card>
+                </Col>
+            </Row>
 
         </Container >
     );
